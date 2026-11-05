@@ -206,6 +206,7 @@ class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class TicketViewSet(viewsets.ModelViewSet):
+    queryset = Ticket.objects.none()
     serializer_class = TicketSerializer
     permission_classes = [IsAuthenticated]
 

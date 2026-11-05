@@ -11,6 +11,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from rest_framework import serializers
+from drf_spectacular.utils import extend_schema, inline_serializer
+
 from .models import Equipment, Reservation, ReservationEvent
 from .serializers import (
     EquipmentSerializer,
@@ -57,6 +60,7 @@ class EquipmentViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
+    queryset = Reservation.objects.none()
     serializer_class = ReservationSerializer
     permission_classes = [IsAuthenticated]
 
@@ -208,6 +212,31 @@ class ReservationViewSet(viewsets.ModelViewSet):
 
 class EquipmentStatisticsView(APIView):
     permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        responses={
+            200: inline_serializer(
+                name="EquipmentStatistics",
+                fields={
+                    "equipment_types": serializers.IntegerField(),
+                    "total_units": serializers.IntegerField(),
+                    "available_units": serializers.IntegerField(),
+                    "occupied_units": serializers.IntegerField(),
+                    "created_count": serializers.IntegerField(),
+                    "confirmed_count": serializers.IntegerField(),
+                    "completed_count": serializers.IntegerField(),
+                    "popular_equipment": inline_serializer(
+                        name="PopularEquipment",
+                        fields={
+                            "name": serializers.CharField(),
+                            "count": serializers.IntegerField(),
+                        },
+                        many=True,
+                    ),
+                },
+            ),
+        },
+    )
 
     def get(self, request):
         equipment = Equipment.objects.all()
