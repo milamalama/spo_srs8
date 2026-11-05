@@ -24,3 +24,5 @@ unused_static/
 *.sqlite3-shm
 
 schema_errors.txt
+
+backups/
