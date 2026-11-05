@@ -66,7 +66,11 @@ paths:
       - cookieAuth: []
       responses:
         '200':
-          description: No response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EquipmentStatistics'
+          description: ''
   /api/equipment/{id}/:
     get:
       operationId: equipment_retrieve
@@ -136,7 +140,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -155,7 +160,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -186,7 +192,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -216,7 +223,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -232,7 +240,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -264,7 +273,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -296,7 +306,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this reservation.
         required: true
       tags:
       - reservations
@@ -357,7 +368,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ticket.
         required: true
       tags:
       - tickets
@@ -376,7 +388,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ticket.
         required: true
       tags:
       - tickets
@@ -407,7 +420,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ticket.
         required: true
       tags:
       - tickets
@@ -437,7 +451,8 @@ paths:
       - in: path
         name: id
         schema:
-          type: string
+          type: integer
+        description: A unique integer value identifying this ticket.
         required: true
       tags:
       - tickets
@@ -488,6 +503,36 @@ components:
       - id
       - name
       - total_quantity
+    EquipmentStatistics:
+      type: object
+      properties:
+        equipment_types:
+          type: integer
+        total_units:
+          type: integer
+        available_units:
+          type: integer
+        occupied_units:
+          type: integer
+        created_count:
+          type: integer
+        confirmed_count:
+          type: integer
+        completed_count:
+          type: integer
+        popular_equipment:
+          type: array
+          items:
+            $ref: '#/components/schemas/PopularEquipment'
+      required:
+      - available_units
+      - completed_count
+      - confirmed_count
+      - created_count
+      - equipment_types
+      - occupied_units
+      - popular_equipment
+      - total_units
     PatchedReservation:
       type: object
       properties:
@@ -538,6 +583,16 @@ components:
           type: string
           format: date-time
           readOnly: true
+    PopularEquipment:
+      type: object
+      properties:
+        name:
+          type: string
+        count:
+          type: integer
+      required:
+      - count
+      - name
     Reservation:
       type: object
       properties:
